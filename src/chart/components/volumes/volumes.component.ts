@@ -27,6 +27,7 @@ export class VolumesComponent extends ChartBaseElement {
 	volumesModel: VolumesModel;
 	yAxisComponent: YAxisComponent;
 	public volumeVisibilityChangedSubject = new BehaviorSubject<boolean>(false);
+	public volumeModeChangedSubject = new BehaviorSubject<boolean>(false);
 
 	constructor(
 		private canvasModel: CanvasModel,
@@ -65,6 +66,7 @@ export class VolumesComponent extends ChartBaseElement {
 		drawingManager.addDrawer(volumesDrawer, 'VOLUMES');
 		this.registerDefaultVolumeColorResolvers();
 		this.volumeVisibilityChangedSubject.next(config.components.volumes.visible);
+		this.volumeModeChangedSubject.next(config.components.volumes.showSeparately);
 	}
 
 	/**
@@ -124,8 +126,10 @@ export class VolumesComponent extends ChartBaseElement {
 		if (this.config.components.volumes.showSeparately === true) {
 			if (visible) {
 				this.separateVolumes.activateSeparateVolumes();
+				this.volumeModeChangedSubject.next(true);
 			} else {
 				this.separateVolumes.deactiveSeparateVolumes();
+				this.volumeModeChangedSubject.next(false);
 			}
 		}
 		this.canvasBoundsContainer.recalculatePanesHeightRatios();
