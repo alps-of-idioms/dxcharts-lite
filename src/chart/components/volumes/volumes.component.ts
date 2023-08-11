@@ -26,7 +26,7 @@ export class VolumesComponent extends ChartBaseElement {
 	private volumesColorByChartTypeMap: Partial<Record<BarType, VolumeColorResolver>> = {};
 	volumesModel: VolumesModel;
 	yAxisComponent: YAxisComponent;
-	public volumeSettingChangedSubject = new BehaviorSubject<boolean>(false);
+	public volumeVisibilityChangedSubject = new BehaviorSubject<boolean>(false);
 
 	constructor(
 		private canvasModel: CanvasModel,
@@ -64,7 +64,7 @@ export class VolumesComponent extends ChartBaseElement {
 		);
 		drawingManager.addDrawer(volumesDrawer, 'VOLUMES');
 		this.registerDefaultVolumeColorResolvers();
-		this.volumeSettingChangedSubject.next(config.components.volumes.visible);
+		this.volumeVisibilityChangedSubject.next(config.components.volumes.visible);
 	}
 
 	/**
@@ -120,7 +120,7 @@ export class VolumesComponent extends ChartBaseElement {
 	 */
 	public setVisible(visible = true) {
 		this.config.components.volumes.visible = visible;
-		this.volumeSettingChangedSubject.next(visible);
+		this.volumeVisibilityChangedSubject.next(visible);
 		if (this.config.components.volumes.showSeparately === true) {
 			if (visible) {
 				this.separateVolumes.activateSeparateVolumes();
